@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disney Cruise 2028 — Family Trip Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep-blue: #0d2447;
+    --ocean: #1a4a7a;
+    --coral: #ff5f4e;
+    --gold: #f5c842;
+    --turquoise: #00c5b0;
+    --sand: #fef3dc;
+    --white: #ffffff;
+    --light-gray: #f0f4f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 22, 40, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(245, 200, 66, 0.2);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(165deg, #0a1628 0%, #0d2447 40%, #1a3a5c 70%, #0a4a6b 100%);
+  }
+
+  .hero-waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    overflow: hidden;
+  }
+  .hero-waves svg { width: 100%; height: 100%; }
+
+  .hero-stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 100px 20px 60px;
+    max-width: 900px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(245, 200, 66, 0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 6px 20px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
+  .hero h1 span { color: var(--gold); font-style: italic; }
+  .hero h1 .coral { color: var(--coral); }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 1.1s ease 0.3s both;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+  .hero-stat .label {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    font-weight: 500;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .scroll-arrow {
+    width: 20px;
+    height: 30px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    position: relative;
+  }
+  .scroll-arrow::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 2px;
+    animation: scrollDown 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollDown {
+    0% { top: 6px; opacity: 1; }
+    100% { top: 16px; opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 90px 40px;
+  }
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--turquoise);
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 620px;
+    margin-bottom: 50px;
+  }
+
+  /* RECOMMENDATION */
+  .recommend-section {
+    background: var(--deep-blue);
+  }
+  .recommend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 95, 78, 0.15);
+    border: 1px solid var(--coral);
+    color: var(--coral);
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  .star-icon { color: var(--gold); font-size: 1rem; }
+
+  .dest-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 20px;
+  }
+  .dest-card {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .dest-card:hover { transform: translateY(-6px); }
+  .dest-card.featured { grid-row: span 1; min-height: 400px; }
+
+  .dest-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s;
+  }
+  .dest-card:hover .dest-card-bg { transform: scale(1.05); }
+
+  .dest-card-bg.caribbean {
+    background: linear-gradient(135deg, #006994 0%, #00a896 30%, #05c3a3 60%, #0077b6 100%);
+  }
+  .dest-card-bg.bahamas {
+    background: linear-gradient(135deg, #00b4d8 0%, #90e0ef 50%, #0096c7 100%);
+  }
+  .dest-card-bg.mexico {
+    background: linear-gradient(135deg, #f77f00 0%, #d62828 30%, #a12a2a 100%);
+  }
+
+  /* Decorative patterns on cards */
+  .dest-card-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .dest-card-bg.caribbean::after {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='25' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='2'/%3E%3C/svg%3E") repeat;
+  }
+
+  .dest-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  }
+  .dest-content {
+    position: relative;
+    z-index: 2;
+    padding: 28px;
+  }
+  .dest-rank {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .dest-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .dest-card:not(.featured) .dest-name { font-size: 1.4rem; }
+  .dest-desc {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .dest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .dest-tag {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+
+  /* SHIPS */
+  .ships-section {
+    background: var(--navy);
+    position: relative;
+  }
+  .ships-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .ships-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .ship-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 30px 26px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ship-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--ocean-accent, var(--turquoise));
+  }
+  .ship-card.featured-ship {
+    background: rgba(245, 200, 66, 0.06);
+    border-color: rgba(245, 200, 66, 0.25);
+  }
+  .ship-card.featured-ship::before { background: var(--gold); }
+  .ship-card:hover {
+    background: rgba(255,255,255,0.07);
+    transform: translateY(-4px);
+  }
+  .ship-emoji { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+  .ship-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .badge-gold { background: rgba(245,200,66,0.2); color: var(--gold); border: 1px solid rgba(245,200,66,0.4); }
+  .badge-blue { background: rgba(0,197,176,0.15); color: var(--turquoise); border: 1px solid rgba(0,197,176,0.3); }
+  .badge-gray { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); }
+
+  .ship-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .ship-class {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  .ship-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .ship-stat {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .ship-stat .s-val {
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: block;
+    color: var(--white);
+  }
+  .ship-stat .s-key {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.5px;
+  }
+  .ship-features {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ship-feature {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .ship-feature::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 0.65rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  /* KIDS */
+  .kids-section {
+    background: linear-gradient(180deg, var(--navy) 0%, #0a1f38 100%);
+    position: relative;
+  }
+  .kids-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--turquoise), transparent);
+  }
+
+  .kids-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .kids-card {
+    border-radius: 16px;
+    padding: 30px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kids-card.nursery { background: linear-gradient(135deg, #2d1b69, #5a2d82); }
+  .kids-card.oceaneer { background: linear-gradient(135deg, #0f4c8a, #1a6dbf); }
+  .kids-card.family { background: linear-gradient(135deg, #0a5c44, #0d7a5c); }
+
+  .kids-card-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .kids-age {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .kids-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .kids-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .kids-list li {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .kids-list li::before {
+    content: '→';
+    color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+  }
+  .kids-note {
+    margin-top: 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+  }
+  .kids-note strong { color: var(--gold); }
+
+  /* ADULTS */
+  .adults-section {
+    background: #0d2035;
+  }
+  .adults-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .adult-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 28px;
+    transition: all 0.3s;
+  }
+  .adult-card:hover { background: rgba(255,255,255,0.07); }
+  .adult-card.wide { grid-column: span 2; }
+  .adult-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+  .adult-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--gold);
+  }
+  .adult-card p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .adult-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .highlight-pill {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* DINING */
+  .dining-section {
+    background: var(--navy);
+  }
+  .dining-cols {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .dining-rotation {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .rotation-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+  .rotation-sub {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .restaurants {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .restaurant-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    border-left: 3px solid var(--rest-color, var(--turquoise));
+  }
+  .rest-icon { font-size: 1.4rem; }
+  .rest-name {
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+  }
+  .rest-cuisine {
+    font-size: 0.76rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .dining-extras {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .dining-extra-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .dining-extra-card h4 {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    color: var(--gold);
+  }
+  .dining-extra-card p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+  }
+
+  /* ISLANDS */
+  .islands-section {
+    background: linear-gradient(180deg, #0d2035 0%, #0a3d2f 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .islands-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(0,197,176,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .islands-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .island-card {
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .island-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .island-bg.castaway {
+    background: linear-gradient(135deg, #48cae4 0%, #90e0ef 30%, #ade8f4 50%, #4cc9f0 100%);
+  }
+  .island-bg.lookout {
+    background: linear-gradient(135deg, #52b788 0%, #74c69d 30%, #a7c957 50%, #386641 100%);
+  }
+  /* Wave pattern overlay */
+  .island-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(255,255,255,0.04) 20px,
+      rgba(255,255,255,0.04) 40px
+    );
+  }
+  .island-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+  }
+  .island-content {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+  }
+  .island-exclusive {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245, 200, 66, 0.2);
+    border: 1px solid rgba(245, 200, 66, 0.4);
+    color: var(--gold);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .island-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .island-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .island-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .island-feature {
+    background: rgba(255,255,255,0.14);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 11px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+  }
+
+  /* ITINERARY */
+  .itinerary-section {
+    background: var(--navy);
+  }
+  .sample-itinerary {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .itinerary-header {
+    background: linear-gradient(135deg, rgba(245,200,66,0.1), rgba(0,197,176,0.05));
+    padding: 28px 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .itinerary-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+  }
+  .itinerary-header p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+  .itinerary-nights {
+    text-align: right;
+  }
+  .nights-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+    font-weight: 900;
+    display: block;
+  }
+  .nights-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.45);
+  }
+  .days-timeline {
+    padding: 8px 0;
+  }
+  .day-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .day-row:last-child { border-bottom: none; }
+  .day-num {
+    padding: 20px 0 20px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .day-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 2px;
+  }
+  .day-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+  .day-content {
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .day-icon { font-size: 1.6rem; }
+  .day-port {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  .day-activity {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+  .day-type {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .type-sea { background: rgba(0,197,176,0.15); color: var(--turquoise); border: 1px solid rgba(0,197,176,0.3); }
+  .type-port { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+  .type-private { background: rgba(255,95,78,0.15); color: var(--coral); border: 1px solid rgba(255,95,78,0.3); }
+
+  /* TIPS */
+  .tips-section {
+    background: #0d2035;
+  }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .tip-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 26px;
+    position: relative;
+  }
+  .tip-num {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+  }
+  .tip-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+  .tip-card h4 {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .tip-card p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.65;
+  }
+  .tip-card p strong { color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    background: #060e1c;
+    padding: 40px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  footer p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.35);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 20px; }
+    .dest-grid { grid-template-columns: 1fr; }
+    .ships-grid { grid-template-columns: 1fr; }
+    .kids-cards { grid-template-columns: 1fr; }
+    .adults-grid { grid-template-columns: 1fr; }
+    .adult-card.wide { grid-column: span 1; }
+    .dining-cols { grid-template-columns: 1fr; }
+    .islands-grid { grid-template-columns: 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .itinerary-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚓ DCL 2028</div>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#ships">Ships</a></li>
+    <li><a href="#kids">Kids</a></li>
+    <li><a href="#adults">Adults</a></li>
+    <li><a href="#dining">Dining</a></li>
+    <li><a href="#islands">Islands</a></li>
+    <li><a href="#itinerary">Itinerary</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-stars" id="stars"></div>
+  <div class="hero-content">
+    <div class="hero-tag">✦ Family Trip Planning 2028 ✦</div>
+    <h1>
+      Our <span>Disney</span><br>
+      Cruise <span class="coral">Adventure</span>
+    </h1>
+    <p class="hero-sub">
+      6 adults + 3 little ones setting sail in February 2028.
+      Warm seas, world-class entertainment, and Disney magic
+      for every age — from 18 months to infinity.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="num">9</span>
+        <span class="label">Travelers</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">5</span>
+        <span class="label">Nights at Sea</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">Feb</span>
+        <span class="label">Warm Weather</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">3</span>
+        <span class="label">Age Groups</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+    scroll
+  </div>
+  <div class="hero-waves">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" fill="#0d2447" opacity="0.8"/>
+      <path d="M0,80 C360,20 720,100 1080,40 C1260,10 1380,70 1440,80 L1440,120 L0,120 Z" fill="#0d2447"/>
+    </svg>
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="recommend-section" id="destinations">
+  <div class="section-inner">
+    <span class="section-label">Where to go</span>
+    <div class="recommend-badge">
+      <span>⭐</span> Top picks for February warm weather
+    </div>
+    <h2 class="section-title">Best Destinations<br>for Your <em>February</em> Cruise</h2>
+    <p class="section-sub">
+      February is perfect for escaping northern cold — these three destinations offer warm sunshine,
+      turquoise waters, and incredible port experiences for adults and kids alike.
+    </p>
+    <div class="dest-grid">
+      <!-- Caribbean -->
+      <div class="dest-card featured">
+        <div class="dest-card-bg caribbean"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-content">
+          <div class="dest-rank">🏆 #1 Top Pick</div>
+          <div class="dest-name">Eastern or Western Caribbean</div>
+          <div class="dest-desc">
+            The crown jewel for a February escape. Five-night itineraries from Port Canaveral or Fort Lauderdale visit
+            stunning islands including St. Thomas, Tortola, Cozumel, Grand Cayman, and Jamaica — plus Disney's own private
+            island stops. Guaranteed warm, with water temps around 79°F.
+          </div>
+          <div class="dest-tags">
+            <span class="dest-tag">🌡️ 80°F avg</span>
+            <span class="dest-tag">🏖️ Beach Stops</span>
+            <span class="dest-tag">🤿 Snorkeling</span>
+            <span class="dest-tag">🍹 Bar Scene</span>
+            <span class="dest-tag">👶 Family Friendly</span>
+            <span class="dest-tag">🛳️ Multiple Ships</span>
+          </div>
+        </div>
+      </div>
+      <!-- Bahamas -->
+      <div class="dest-card">
+        <div class="dest-card-bg bahamas"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-content">
+          <div class="dest-rank">#2 Great Choice</div>
+          <div class="dest-name">The Bahamas</div>
+          <div class="dest-desc">
+            Includes Disney's exclusive Castaway Cay &amp; Lookout Cay islands.
+            Crystal clear waters and the magic of Disney's private beaches.
+          </div>
+          <div class="dest-tags">
+            <span class="dest-tag">🌡️ 77°F avg</span>
+            <span class="dest-tag">🏝️ Private Islands</span>
+            <span class="dest-tag">Nassau Stop</span>
+          </div>
+        </div>
+      </div>
+      <!-- Mexico -->
+      <div class="dest-card">
+        <div class="dest-card-bg mexico"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-content">
+          <div class="dest-rank">#3 Consider</div>
+          <div class="dest-name">Mexico (Cozumel)</div>
+          <div class="dest-desc">
+            Vibrant culture, Mayan ruins, and incredible snorkeling reefs.
+            Often combined with Caribbean itineraries.
+          </div>
+          <div class="dest-tags">
+            <span class="dest-tag">🌡️ 82°F avg</span>
+            <span class="dest-tag">🏺 Culture</span>
+            <span class="dest-tag">🐠 Reef Diving</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eliminate cold destinations callout -->
+    <div style="margin-top:30px; background:rgba(255,95,78,0.08); border:1px solid rgba(255,95,78,0.2); border-radius:12px; padding:20px 24px; font-size:0.85rem; color:rgba(255,255,255,0.65); line-height:1.7;">
+      <strong style="color:var(--coral);">❄️ Skipping for February:</strong>
+      Alaska, Canada, Pacific Coast, Bermuda, and Europe are cold or unavailable in February and
+      not suited for your warm-weather family trip. Transatlantic and Pacific Canal crossings are
+      possible but very long (10+ nights) — not ideal for toddlers or a first group cruise.
+    </div>
+  </div>
+</section>
+
+<!-- SHIPS -->
+<section class="ships-section" id="ships">
+  <div class="section-inner">
+    <span class="section-label">The Fleet</span>
+    <h2 class="section-title">Choosing Your Ship</h2>
+    <p class="section-sub">
+      By 2028, Disney will have 8–9 ships in operation. For a warm Caribbean 5-night cruise,
+      these are your most likely options — with the newest Wish-class ships offering the most features for families and adults.
+    </p>
+    <div class="ships-grid">
+      <!-- Disney Wish Class -->
+      <div class="ship-card featured-ship">
+        <span class="ship-emoji">⭐</span>
+        <span class="ship-badge badge-gold">Best for Your Group</span>
+        <div class="ship-name">Disney Wish Class</div>
+        <div class="ship-class">Wish • Treasure • Destiny — Wish-class ships (2022–2025)</div>
+        <div class="ship-stats">
+          <div class="ship-stat">
+            <span class="s-val">4,000</span>
+            <span class="s-key">guests</span>
+          </div>
+          <div class="ship-stat">
+            <span class="s-val">144,000</span>
+            <span class="s-key">gross tons</span>
+          </div>
+        </div>
+        <div class="ship-features">
+          <div class="ship-feature">AquaMouse water slide attraction</div>
+          <div class="ship-feature">Grand Hall themed atrium (the largest Disney atrium yet)</div>
+          <div class="ship-feature">Walt Disney Imagineering Lab (kids club)</div>
+          <div class="ship-feature">"it's a small world" nursery for toddlers</div>
+          <div class="ship-feature">Palo Steakhouse adult fine dining</div>
+          <div class="ship-feature">LNG-powered (most eco-friendly)</div>
+          <div class="ship-feature">Expanded adult-only area (The Periscope pub, Keg &amp; Compass bar)</div>
+          <div class="ship-feature">Marvel Day at Sea available (Destiny)</div>
+          <div class="ship-feature">Homeport: Port Canaveral &amp; Fort Lauderdale</div>
+        </div>
+      </div>
+      <!-- Disney Dream Class -->
+      <div class="ship-card">
+        <span class="ship-emoji">🌊</span>
+        <span class="ship-badge badge-blue">Great Option</span>
+        <div class="ship-name">Disney Dream / Fantasy</div>
+        <div class="ship-class">Dream-class ships (2011–2012)</div>
+        <div class="ship-stats">
+          <div class="ship-stat">
+            <span class="s-val">4,000</span>
+            <span class="s-key">guests</span>
+          </div>
+          <div class="ship-stat">
+            <span class="s-val">130,000</span>
+            <span class="s-key">gross tons</span>
+          </div>
+        </div>
+        <div class="ship-features">
+          <div class="ship-feature">AquaDuck water coaster (extends over ship's edge!)</div>
+          <div class="ship-feature">Oceaneer Club &amp; Lab for kids 3–10</div>
+          <div class="ship-feature">Palo (Italian) &amp; Remy (French) adult restaurants</div>
+          <div class="ship-feature">Skyline Bar, Pink Bar, Evolution nightclub</div>
+          <div class="ship-feature">Broadway-style shows (Beauty and the Beast, etc.)</div>
+          <div class="ship-feature">Midship Detective Agency interactive game</div>
+          <div class="ship-feature">Senses Spa adult relaxation area</div>
+        </div>
+      </div>
+      <!-- Disney Magic Class -->
+      <div class="ship-card">
+        <span class="ship-emoji">✨</span>
+        <span class="ship-badge badge-gray">Classic Option</span>
+        <div class="ship-name">Disney Magic / Wonder</div>
+        <div class="ship-class">Magic-class ships (1998–1999, refurbished)</div>
+        <div class="ship-stats">
+          <div class="ship-stat">
+            <span class="s-val">2,700</span>
+            <span class="s-key">guests</span>
+          </div>
+          <div class="ship-stat">
+            <span class="s-val">83,000</span>
+            <span class="s-key">gross tons</span>
+          </div>
+        </div>
+        <div class="ship-features">
+          <div class="ship-feature">Smaller, more intimate feel — less crowds</div>
+          <div class="ship-feature">AquaDunk waterslide (Magic)</div>
+          <div class="ship-feature">Tiana's Place restaurant (Wonder) — live jazz!</div>
+          <div class="ship-feature">Marvel Day at Sea special sailings (Magic, Galveston)</div>
+          <div class="ship-feature">Classic Disney charm &amp; Art Deco style</div>
+          <div class="ship-feature">Pub-style adult areas</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:24px; text-align:center; background:rgba(245,200,66,0.07); border:1px solid rgba(245,200,66,0.2); border-radius:12px; padding:20px 24px; font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.7;">
+      💡 <strong style="color:var(--gold);">Our Recommendation:</strong>
+      Aim for a <strong style="color:white;">Wish-class ship</strong> (Disney Wish, Treasure, or Destiny)
+      sailing from <strong style="color:white;">Port Canaveral or Fort Lauderdale</strong> on a 5-night Eastern or Western Caribbean route.
+      These ships have the best onboard experiences for mixed age groups and the newest facilities.
+    </div>
+  </div>
+</section>
+
+<!-- KIDS -->
+<section class="kids-section" id="kids">
+  <div class="section-inner">
+    <span class="section-label">For the little ones</span>
+    <h2 class="section-title">Kids &amp; Family<br>Onboard Experience</h2>
+    <p class="section-sub">
+      Disney Cruise Line pioneered age-segregated programming — meaning every child from 18 months to teen has their own
+      dedicated, supervised space with age-appropriate fun. No child gets left out.
+    </p>
+    <div class="kids-cards">
+      <!-- Nursery -->
+      <div class="kids-card nursery">
+        <span class="kids-card-icon">👶</span>
+        <span class="kids-age">Ages 6 months – 3 years</span>
+        <h3>"it's a small world" Nursery</h3>
+        <ul class="kids-list">
+          <li>Professionally staffed childcare (trained Disney counselors)</li>
+          <li>Arts &amp; crafts, storytelling, games, character meet-and-greets</li>
+          <li>Cozy crib area for nap time (dimly lit, calm space)</li>
+          <li>Feeding, diaper changing included in care</li>
+          <li>Themed decor inspired by the classic ride — whimsical and comforting</li>
+          <li>Buttons, wheels &amp; horns to keep tiny hands busy for hours</li>
+          <li>Family playtime available 8–9am each day</li>
+        </ul>
+        <div class="kids-note">
+          <strong>⚠️ Important for your 1.5–2 year olds:</strong> The nursery has very limited capacity
+          (max 16 toddlers). <strong>Book your nursery sessions immediately when bookings open</strong>
+          — this fills up extremely fast. There is an hourly charge (not included in cruise fare).
+          Bring your own diapers, wipes, bottles &amp; snacks.
+        </div>
+      </div>
+
+      <!-- Oceaneer Club -->
+      <div class="kids-card oceaneer">
+        <span class="kids-card-icon">🚀</span>
+        <span class="kids-age">Ages 3 – 10 years</span>
+        <h3>Disney's Oceaneer Club &amp; Lab</h3>
+        <ul class="kids-list">
+          <li>Themed zones: Star Wars Millennium Falcon, Andy's Room, Pixie Hollow</li>
+          <li>Interactive play, games, experiments &amp; performances</li>
+          <li>Character meet-and-greets in the club itself</li>
+          <li>Disney counselors supervise at all times (wristband check-in)</li>
+          <li>Secure kids-only hallway between Club &amp; Lab</li>
+          <li>Parents can be paged via the DCL app at any time</li>
+        </ul>
+        <div class="kids-note">
+          <strong>✅ Included in cruise fare</strong> — unlike the nursery, there's no extra charge
+          for the Oceaneer Club. Your 5-year-old will <em>love</em> this space.
+          On Castaway Cay, the club moves to Scuttle's Cove on the island!
+        </div>
+      </div>
+
+      <!-- Family activities -->
+      <div class="kids-card family">
+        <span class="kids-card-icon">🎉</span>
+        <span class="kids-age">All ages together</span>
+        <h3>Family Activities</h3>
+        <ul class="kids-list">
+          <li>Character meet-and-greets fleet-wide (Mickey, Minnie, Princesses)</li>
+          <li>Disney-themed deck parties &amp; fireworks at sea (rare for any cruise!)</li>
+          <li>Pirate Night — costumes, deck party, spectacular fireworks</li>
+          <li>Bibbidi Bobbidi Boutique makeovers for little ones</li>
+          <li>Family pool &amp; Mickey-themed waterslide</li>
+          <li>AquaDuck/AquaMouse waterslide (height restrictions apply)</li>
+          <li>Buena Vista Theatre — free movies, Disney &amp; current films</li>
+          <li>Broadway-style shows each evening (everyone goes together)</li>
+          <li>DisneyBand+ wearable for tap-to-pay &amp; stateroom entry</li>
+        </ul>
+        <div class="kids-note">
+          <strong>🎆 Fireworks at sea</strong> — Disney is one of the only cruise lines
+          permitted to launch actual fireworks from the ship. This is a magical moment for ALL ages.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADULTS -->
+<section class="adults-section" id="adults">
+  <div class="section-inner">
+    <span class="section-label">For the grown-ups</span>
+    <h2 class="section-title">Adult-Only Spaces<br>&amp; <em>Nightlife</em></h2>
+    <p class="section-sub">
+      Disney Cruise has dedicated adult areas where no children are allowed — proper bars,
+      lounges, pools &amp; entertainment. It's a real party when the kids are in their clubs!
+    </p>
+    <div class="adults-grid">
+      <div class="adult-card">
+        <span class="adult-icon">🍹</span>
+        <h3>Bars &amp; Lounges (Adults Only)</h3>
+        <p>Every Disney ship has multiple adult-exclusive bars — no kids allowed. You'll find themed cocktail lounges, a champagne &amp; wine bar, a sports pub, and more. Signature cocktails, premium spirits &amp; curated wine lists.</p>
+        <div class="adult-highlights">
+          <span class="highlight-pill">Keg &amp; Compass (Pub)</span>
+          <span class="highlight-pill">Pink Wine &amp; Champagne Bar</span>
+          <span class="highlight-pill">Skyline Bar</span>
+          <span class="highlight-pill">Meridian Bar</span>
+          <span class="highlight-pill">Evolution Nightclub</span>
+          <span class="highlight-pill">Bon Voyage Bar</span>
+        </div>
+      </div>
+      <div class="adult-card">
+        <span class="adult-icon">🏊</span>
+        <h3>Adult-Only Pool Deck</h3>
+        <p>Every ship has a dedicated adults-only pool area. On Wish-class ships this is expanded significantly. Relax in the sun without splashing toddlers. Poolside drinks service, loungers, hot tubs.</p>
+        <div class="adult-highlights">
+          <span class="highlight-pill">Adults-only pool</span>
+          <span class="highlight-pill">Hot tubs</span>
+          <span class="highlight-pill">Poolside bar service</span>
+          <span class="highlight-pill">Sun loungers</span>
+        </div>
+      </div>
+      <div class="adult-card wide">
+        <span class="adult-icon">🌙</span>
+        <h3>Nightlife &amp; After-Dark Entertainment</h3>
+        <p>Once the kids are in the clubs or asleep, the ship comes alive. Live music, DJ nights, trivia, comedy shows, dance parties, and late-night lounge crawls. Evolution Nightclub on the Dream-class ships is a full nightclub experience. Themed evenings include pirate night deck parties and specialty cocktail events. Disney ships are NOT casinos — but the bar scene is genuinely excellent and the atmosphere buzzing. You won't be bored.</p>
+        <div class="adult-highlights">
+          <span class="highlight-pill">🎵 Live Music</span>
+          <span class="highlight-pill">🎤 Karaoke</span>
+          <span class="highlight-pill">🎭 Comedy Shows</span>
+          <span class="highlight-pill">💃 DJ Dance Nights</span>
+          <span class="highlight-pill">🍸 Cocktail Events</span>
+          <span class="highlight-pill">🏴‍☠️ Pirate Deck Party</span>
+          <span class="highlight-pill">🎰 No Casino (sorry!)</span>
+          <span class="highlight-pill">🎬 Late night movies</span>
+        </div>
+      </div>
+      <div class="adult-card">
+        <span class="adult-icon">💆</span>
+        <h3>Senses Spa &amp; Fitness</h3>
+        <p>Full-service adults-only spa with massages, facials, body wraps, steam rooms &amp; salon. State-of-the-art gym. A perfect retreat while kids are in their clubs — book treatments early!</p>
+        <div class="adult-highlights">
+          <span class="highlight-pill">Couples Massages</span>
+          <span class="highlight-pill">Full Gym</span>
+          <span class="highlight-pill">Steam Rooms</span>
+          <span class="highlight-pill">Salon</span>
+        </div>
+      </div>
+      <div class="adult-card">
+        <span class="adult-icon">🌅</span>
+        <h3>Quiet Adult Spaces</h3>
+        <p>Beyond bars &amp; pools — there are adult-exclusive reading areas, observation decks with panoramic views, and the peaceful adults' retreat for morning coffee &amp; sunrises. Perfect for the morning-after recovery!</p>
+        <div class="adult-highlights">
+          <span class="highlight-pill">Observation Decks</span>
+          <span class="highlight-pill">Adult Retreat</span>
+          <span class="highlight-pill">Coffee Lounge</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DINING -->
+<section class="dining-section" id="dining">
+  <div class="section-inner">
+    <span class="section-label">Food &amp; Drink</span>
+    <h2 class="section-title">World-Class Dining<br>for Every Taste</h2>
+    <p class="section-sub">
+      Disney's rotational dining system is one of the best in the cruise industry —
+      you get a new restaurant every night but keep the same incredible servers who know exactly what you like.
+    </p>
+    <div class="dining-cols">
+      <div class="dining-rotation">
+        <div class="rotation-title">Rotational Dining</div>
+        <div class="rotation-sub">
+          Every dinner is in a different themed restaurant — included in your fare. Your server team rotates with you each night,
+          learning your preferences, dietary needs and names. An extraordinary personalised experience.
+        </div>
+        <div class="restaurants">
+          <div class="restaurant-row" style="--rest-color: #00b4d8;">
+            <span class="rest-icon">🌊</span>
+            <div>
+              <div class="rest-name">Worlds of Marvel</div>
+              <div class="rest-cuisine">Interactive Marvel dinner show — Ant-Man &amp; heroes appear! (Wish class)</div>
+            </div>
+          </div>
+          <div class="restaurant-row" style="--rest-color: #f5c842;">
+            <span class="rest-icon">🏰</span>
+            <div>
+              <div class="rest-name">1923</div>
+              <div class="rest-cuisine">Elegant tribute to Walt Disney's golden era of animation (Wish class)</div>
+            </div>
+          </div>
+          <div class="restaurant-row" style="--rest-color: #52b788;">
+            <span class="rest-icon">🗺️</span>
+            <div>
+              <div class="rest-name">Tiana's Palace</div>
+              <div class="rest-cuisine">New Orleans jazz &amp; Cajun cuisine — live music! (Wonder)</div>
+            </div>
+          </div>
+          <div class="restaurant-row" style="--rest-color: #ff5f4e;">
+            <span class="rest-icon">🎨</span>
+            <div>
+              <div class="rest-name">Animator's Palate</div>
+              <div class="rest-cuisine">Animated screens come to life — your drawings appear on the walls</div>
+            </div>
+          </div>
+          <div class="restaurant-row" style="--rest-color: #9b5de5;">
+            <span class="rest-icon">🌅</span>
+            <div>
+              <div class="rest-name">Royal Palace / Royal Court</div>
+              <div class="rest-cuisine">Classic fine dining — Disney princess themed elegance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dining-extras">
+        <div class="dining-extra-card">
+          <h4>🍝 Palo — Adult-Only Italian</h4>
+          <p>Northern Italian cuisine in an elegant adults-only restaurant. Requires reservation &amp; a supplement fee (~$40/person). An absolute must for a romantic dinner for the adults without kids. Book on Day 1!</p>
+        </div>
+        <div class="dining-extra-card">
+          <h4>🇫🇷 Remy / Enchantée — Adult-Only French</h4>
+          <p>The most luxurious dining experience on the ship. French fine dining with an extensive wine menu. Only on Dream, Fantasy &amp; Wish-class ships. Premium pricing but absolutely special.</p>
+        </div>
+        <div class="dining-extra-card">
+          <h4>🌮 Casual Dining Included</h4>
+          <p>Pool deck buffets, pizza and burger spots, themed cafés and 24-hour soft drinks (sodas are always free!). Refillable mugs, room service, and dedicated character breakfast options.</p>
+        </div>
+        <div class="dining-extra-card">
+          <h4>🥂 Soft Drinks Always Free</h4>
+          <p>Unlike most cruise lines, Disney includes non-alcoholic drinks at no charge throughout the ship — sodas, juices &amp; iced tea. Only alcohol and specialty coffees are extra.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ISLANDS -->
+<section class="islands-section" id="islands">
+  <div class="section-inner">
+    <span class="section-label">Disney's Private Destinations</span>
+    <h2 class="section-title">Exclusive Disney<br><em>Island Paradises</em></h2>
+    <p class="section-sub">
+      Most Caribbean &amp; Bahamas itineraries stop at one or both of Disney's private island destinations —
+      reserved exclusively for Disney Cruise guests. No outside tourists. Pure magic.
+    </p>
+    <div class="islands-grid">
+      <div class="island-card">
+        <div class="island-bg castaway"></div>
+        <div class="island-overlay"></div>
+        <div class="island-content">
+          <div class="island-exclusive">⚓ Disney Exclusive</div>
+          <div class="island-name">Castaway Cay</div>
+          <div class="island-desc">
+            Disney's original private island in the Bahamas. Separate beaches for families, adults, &amp; teens.
+            The ship docks right at the island — just walk off. Scuttle's Cove kids club operates on the island,
+            so parents can enjoy adult beach time while little ones play safely.
+          </div>
+          <div class="island-features">
+            <span class="island-feature">👨‍👩‍👧 Family Beach</span>
+            <span class="island-feature">🔞 Adults-Only Beach</span>
+            <span class="island-feature">🏖️ Free Chairs &amp; Umbrellas</span>
+            <span class="island-feature">🚲 Bike Rentals</span>
+            <span class="island-feature">🤿 Snorkeling Trail</span>
+            <span class="island-feature">🍔 Included BBQ Lunch</span>
+            <span class="island-feature">🛶 Water Sports</span>
+            <span class="island-feature">🐠 Scuttle's Cove Kids Club</span>
+          </div>
+        </div>
+      </div>
+      <div class="island-card">
+        <div class="island-bg lookout"></div>
+        <div class="island-overlay"></div>
+        <div class="island-content">
+          <div class="island-exclusive">🌿 Opened 2024</div>
+          <div class="island-name">Lookout Cay at Lighthouse Point</div>
+          <div class="island-desc">
+            Disney's stunning new private destination on Eleuthera Island in the Bahamas.
+            Opened in 2024 and focused on sustainability &amp; Bahamian culture.
+            More lush and immersive than Castaway Cay, with a celebration of local art, food and heritage.
+          </div>
+          <div class="island-features">
+            <span class="island-feature">🌺 Bahamian Culture</span>
+            <span class="island-feature">🎨 Local Art</span>
+            <span class="island-feature">🌊 Pristine Beaches</span>
+            <span class="island-feature">🌿 Eco-Focused</span>
+            <span class="island-feature">🍹 Bars &amp; Dining</span>
+            <span class="island-feature">💧 Water Activities</span>
+            <span class="island-feature">🏡 Cabana Rentals</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:24px; font-size:0.82rem; color:rgba(255,255,255,0.45);">
+      💡 Some "Double Dip" itineraries visit BOTH islands in one sailing — an amazing bonus for beach lovers
+    </p>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section class="itinerary-section" id="itinerary">
+  <div class="section-inner">
+    <span class="section-label">Sample schedule</span>
+    <h2 class="section-title">A 5-Night Eastern<br>Caribbean Itinerary</h2>
+    <p class="section-sub">
+      Here's a sample of what a 5-night Disney Caribbean cruise looks like — departing from Port Canaveral or Fort Lauderdale.
+      Exact ports vary by sailing date, but this gives you the feel of the trip.
+    </p>
+    <div class="sample-itinerary">
+      <div class="itinerary-header">
+        <div>
+          <h3>🛳️ Eastern Caribbean Adventure</h3>
+          <p>Departing Port Canaveral or Fort Lauderdale, Florida · February 2028</p>
+        </div>
+        <div class="itinerary-nights">
+          <span class="nights-num">5</span>
+          <span class="nights-label">Nights</span>
+        </div>
+      </div>
+      <div class="days-timeline">
+        <div class="day-row">
+          <div class="day-num">
+            <span class="day-label">Day</span>
+            <span class="day-number">1</span>
+          </div>
+          <div class="day-content">
+            <span class="day-icon">⚓</span>
+            <div>
+              <div class="day-port">Embarkation Day — Port Canaveral, Florida</div>
+              <div class="day-activity">Board the ship, explore, kids club open house, first rotational dinner, welcome show, deck party</div>
+            </div>
+            <span class="day-type type-sea">Embark</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-num">
+            <span class="day-label">Day</span>
+            <span class="day-number">2</span>
+          </div>
+          <div class="day-content">
+            <span class="day-icon">🌊</span>
+            <div>
+              <div class="day-port">At Sea — Full Disney Ship Day</div>
+              <div class="day-activity">AquaDuck/AquaMouse, Broadway show, character meets, spa, bars open all day, kids in clubs, family pool</div>
+            </div>
+            <span class="day-type type-sea">Sea Day</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-num">
+            <span class="day-label">Day</span>
+            <span class="day-number">3</span>
+          </div>
+          <div class="day-content">
+            <span class="day-icon">🌴</span>
+            <div>
+              <div class="day-port">St. Thomas, U.S. Virgin Islands</div>
+              <div class="day-activity">Magens Bay beach, duty-free shopping, snorkeling excursions, historic Charlotte Amalie town, sailing tours</div>
+            </div>
+            <span class="day-type type-port">Port Day</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-num">
+            <span class="day-label">Day</span>
+            <span class="day-number">4</span>
+          </div>
+          <div class="day-content">
+            <span class="day-icon">🏴‍☠️</span>
+            <div>
+              <div class="day-port">Tortola, British Virgin Islands</div>
+              <div class="day-activity">Sage Mountain hike, Cane Garden Bay beach, Pirate Night on board — costumes, deck party &amp; fireworks!</div>
+            </div>
+            <span class="day-type type-port">Port Day</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-num">
+            <span class="day-label">Day</span>
+            <span class="day-number">5</span>
+          </div>
+          <div class="day-content">
+            <span class="day-icon">🏝️</span>
+            <div>
+              <div class="day-port">Castaway Cay — Disney's Private Island</div>
+              <div class="day-activity">Adults-only beach, family beach, Scuttle's Cove kids club, snorkeling trail, BBQ lunch included, waterslides</div>
+            </div>
+            <span class="day-type type-private">Private Island</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-num">
+            <span class="day-label">Day</span>
+            <span class="day-number">6</span>
+          </div>
+          <div class="day-content">
+            <span class="day-icon">🌅</span>
+            <div>
+              <div class="day-port">Disembarkation — Port Canaveral, Florida</div>
+              <div class="day-activity">Final breakfast, memories made, disembark · Consider adding a Walt Disney World visit before or after!</div>
+            </div>
+            <span class="day-type type-sea">Disembark</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section class="tips-section" id="tips">
+  <div class="section-inner">
+    <span class="section-label">Planning advice</span>
+    <h2 class="section-title">Key Tips for<br>Your Group</h2>
+    <p class="section-sub">Things to know before you book — especially with toddlers and a mixed group.</p>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <span class="tip-num">01</span>
+        <span class="tip-icon">📅</span>
+        <h4>Book EARLY — 18+ Months Ahead</h4>
+        <p>Disney 2028 bookings open ~2026. For a group of 9 with specific cabin needs, book the day bookings open. <strong>Nursery reservations open separately</strong> and fill within hours — don't miss this!</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-num">02</span>
+        <span class="tip-icon">🛏️</span>
+        <h4>Cabin Strategy for Your Group</h4>
+        <p>Disney staterooms are designed for families and are larger than industry average. Consider a <strong>connecting cabin or concierge suite</strong> for the toddler families. Adults without kids can book standard verandah cabins nearby.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-num">03</span>
+        <span class="tip-icon">🍼</span>
+        <h4>Toddler Nursery — Reserve Immediately</h4>
+        <p>The "it's a small world" nursery has very limited spots. You <strong>must</strong> book nursing sessions as soon as the window opens. Bring your own supplies. There's an hourly fee (~$9–$11/hour per child).</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-num">04</span>
+        <span class="tip-icon">🍷</span>
+        <h4>Bring Your Own Wine / Beer</h4>
+        <p>Disney allows guests to bring <strong>2 bottles of wine or 6 beers per adult</strong> at embarkation. Bring good bottles — corkage at Palo is worth it! This is a great way to save on drinks costs.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-num">05</span>
+        <span class="tip-icon">💰</span>
+        <h4>Budget Planning</h4>
+        <p>5-night Caribbean cruise in February: expect <strong>~$800–$2,000+ per person</strong> depending on cabin type. Budget separately for: specialty dining, nursery fees, alcohol, excursions, spa &amp; gratuities ($16/day per person).</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-num">06</span>
+        <span class="tip-icon">🎭</span>
+        <h4>Look for Special Sailings</h4>
+        <p>In February, watch for <strong>Marvel Day at Sea</strong> on the Disney Magic (from Galveston) or special themed sailings. These add incredible bonus entertainment for all ages — superheroes, exclusive merchandise &amp; experiences.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">⚓ Disney Cruise 2028</div>
+  <p>
+    This infographic was created to help our family plan the ultimate 2028 Disney Cruise getaway.
+    All information based on current Disney Cruise Line offerings. Specific 2028 itineraries and ships
+    will be confirmed when bookings open. Visit <strong>disneycruise.disney.go.com</strong> for official details.
+  </p>
+  <p style="margin-top:12px; font-size:0.7rem;">
+    Made with 💛 for our family adventure
+  </p>
+</footer>
+
+<script>
+  // Generate stars
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
+    star.style.setProperty('--delay', (Math.random() * 4) + 's');
+    star.style.width = star.style.height = (1 + Math.random() * 2) + 'px';
+    starsContainer.appendChild(star);
+  }
+
+  // Fade in sections on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.dest-card, .ship-card, .kids-card, .adult-card, .island-card, .tip-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
